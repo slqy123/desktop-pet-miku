@@ -11,8 +11,9 @@ import numpy as np
 import time
 
 pets = []
-def addOnePet():
-    pets.append(myPet())
+def addPets(n=1):
+    for _ in range(n):
+        pets.append(myPet())
 
 
 def delOnePet():
@@ -212,9 +213,9 @@ class myPet(QWidget):
                         self.setImg(self.special_action['up'])
                 else:
                     if x > 0:
-                        self.setImg(self.special_action[f'r{min(3, x//500+1)}'])
+                        self.setImg(self.special_action[f'r{min(3, x//300+1)}'])
                     else:
-                        self.setImg(self.special_action[f'l{min(3, -x//500+1)}'])
+                        self.setImg(self.special_action[f'l{min(3, -x//300+1)}'])
 
             QMouseEvent.accept()
 
@@ -248,12 +249,15 @@ class myPet(QWidget):
     def contextMenuEvent(self, QContextMenuEvent):
         quit = QAction("退出", self, triggered=self.close)
         quit.setIcon(QIcon("img/icon.png"))
-        addPet = QAction("添加一个Miku", self, triggered=addOnePet)
+        addPet = QAction("添加一个Miku", self, triggered=addPets)
         addPet.setIcon(QIcon("img/icon.png"))
+        addNPet = QAction("添加十个Miku", self, triggered=lambda: addPets(10))
+        addNPet.setIcon(QIcon("img/icon.png"))
         removePet = QAction("移除一个Miku", self, triggered=delOnePet)
         removePet.setIcon(QIcon("img/icon.png"))
         self.trayIconMenu = QMenu(self)
         self.trayIconMenu.addAction(addPet)
+        self.trayIconMenu.addAction(addNPet)
         self.trayIconMenu.addAction(removePet)
         self.trayIconMenu.addAction(quit)
         self.trayIconMenu.exec_(QContextMenuEvent.globalPos())
